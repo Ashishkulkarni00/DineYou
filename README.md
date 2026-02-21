@@ -9,17 +9,6 @@ DineYou is a cloud-ready microservices-based in dining ordering platform that en
 =======
 ## 🎥 DineYou – System Demo
 
-This demo showcases:
-
-- Restaurant onboarding
-- Menu management
-- QR ordering
-- Cart & checkout
-- Payment flow
-- Order tracking
-
-👇 Watch the full demo below:
-
 https://github.com/user-attachments/assets/YOUR_VIDEO_ID.mp4
 
 
