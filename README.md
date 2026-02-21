@@ -3,7 +3,7 @@
 
 # 🍽️ DineYou – QR Based Digital Menu & Smart Ordering Platform
 
-DineYou is a cloud-ready microservices-based restaurant ordering platform that enables customers to scan a QR code, browse dynamic menus, place orders, and complete secure payments — while providing restaurants with operational intelligence and load-aware order handling.
+DineYou is a cloud-ready microservices-based in dining ordering platform that enables customers to scan a QR code, browse dynamic menus, place orders, and complete secure payments — while providing restaurants with operational intelligence and load-aware order handling.
 
 ---
 
