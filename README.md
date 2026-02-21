@@ -1,6 +1,3 @@
-Below is a **production-quality, clean, recruiter-impressive README.md** for your DineYou microservices project.
-
-You can copy this directly into your repository root as `README.md`.
 
 ---
 
