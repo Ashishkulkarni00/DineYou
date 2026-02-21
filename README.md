@@ -7,7 +7,11 @@ DineYou is a cloud-ready microservices-based in dining ordering platform that en
 
 ---
 
-## 🏗 Architecture Overview
+#
+
+https://github.com/user-attachments/assets/7d4f9264-c9eb-4fd8-b885-0f0f96457b9f
+
+# 🏗 Architecture Overview
 
 DineYou follows a **microservices architecture** built using **Spring Boot**, secured with **Keycloak**, containerized with **Docker**, and orchestrated via **Docker Compose**.
 
