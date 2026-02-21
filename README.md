@@ -6,12 +6,25 @@
 DineYou is a cloud-ready microservices-based in dining ordering platform that enables customers to scan a QR code, browse dynamic menus, place orders, and complete secure payments — while providing restaurants with operational intelligence and load-aware order handling.
 
 ---
+=======
+## 🎥 DineYou – System Demo
 
-#
+This demo showcases:
 
-https://github.com/user-attachments/assets/7d4f9264-c9eb-4fd8-b885-0f0f96457b9f
+- Restaurant onboarding
+- Menu management
+- QR ordering
+- Cart & checkout
+- Payment flow
+- Order tracking
 
-# 🏗 Architecture Overview
+👇 Watch the full demo below:
+
+https://github.com/user-attachments/assets/YOUR_VIDEO_ID.mp4
+
+
+## 🏗 Architecture Overview
+>>>>>>> c01f662 (Added demo video)
 
 DineYou follows a **microservices architecture** built using **Spring Boot**, secured with **Keycloak**, containerized with **Docker**, and orchestrated via **Docker Compose**.
 
