@@ -1,0 +1,117 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="24.7.16">
+  <diagram name="Page-1" id="YLFP16NYVtaeArlfJj71">
+    <mxGraphModel dx="-66" dy="-1297" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-2" target="pxZ1FeGk42S8Q_zd6QdM-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-1" value="Enters the restaurant" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2040" y="2077" width="204" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-3" target="pxZ1FeGk42S8Q_zd6QdM-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-3" target="pxZ1FeGk42S8Q_zd6QdM-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-3" value="Redirected to hotel&#39;s landing page" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2040" y="2205" width="204" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-6" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Get Restaurant&lt;/span&gt;&lt;/h1&gt;&lt;div&gt;here,&amp;nbsp;/GetRestaurant/{restaurantId} this API will trigger, and it will fetch restaurant details along with special offers for landing page.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2304" y="2169" width="248" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-1" target="pxZ1FeGk42S8Q_zd6QdM-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2142" y="2114" as="sourcePoint" />
+            <mxPoint x="2142" y="2205" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-2" value="Scan QR code" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2040" y="2141" width="204" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-10" target="pxZ1FeGk42S8Q_zd6QdM-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-10" target="pxZ1FeGk42S8Q_zd6QdM-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-10" value="Clicks on menu button" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2040" y="2349" width="204" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-12" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;br&gt;&lt;table style=&quot;border-collapse:&amp;lt;br/&amp;gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; height=&quot;19&quot;&gt;Get menu card - with item details&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/h1&gt;&lt;div&gt;here,&amp;nbsp;&lt;/div&gt;&lt;table style=&quot;border-collapse:&lt;br/&gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;&lt;br/&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; height=&quot;19&quot;&gt;/GetMenuCard/restaurant/{restaurantId}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;div&gt;&amp;nbsp;this API will trigger, and it will fetch the menu card details based on restaurant id.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2552" y="2262.25" width="316" height="210.5" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-14" target="pxZ1FeGk42S8Q_zd6QdM-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-14" target="pxZ1FeGk42S8Q_zd6QdM-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-14" value="Click&#39;s on table availability" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1773" y="2349" width="204" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1865" y="2242" as="sourcePoint" />
+            <mxPoint x="1865" y="2349" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-16" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Get Tables of restaurant&lt;/span&gt;&lt;/h1&gt;&lt;div&gt;here,&amp;nbsp;&lt;/div&gt;&lt;table style=&quot;border-collapse:&lt;br/&gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;&lt;br/&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; class=&quot;xl65&quot; height=&quot;19&quot;&gt;/getAllTables/{restaurantId}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;div&gt;&amp;nbsp;this API will trigger, and it will fetch restaurant table details, free/occupied&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1419" y="2307.5" width="248" height="141.5" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-19" target="pxZ1FeGk42S8Q_zd6QdM-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-19" target="pxZ1FeGk42S8Q_zd6QdM-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-19" value="Scrolls throgh the menu and&lt;br&gt;&amp;nbsp;select items to add to cart (+,- buttons)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1992" y="2529" width="301" height="73" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-21" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Add Items to cart&lt;/h1&gt;&lt;div&gt;here, add items to cart api will be triggered to add items&lt;/div&gt;&lt;table style=&quot;border-collapse:&lt;br/&gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;&lt;br/&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; height=&quot;19&quot;&gt;/AddItem&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;on each plus and minus update item api will be triggered&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2552" y="2497" width="316" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-23" target="pxZ1FeGk42S8Q_zd6QdM-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-23" target="pxZ1FeGk42S8Q_zd6QdM-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-23" value="Clicks to proceed to check out button" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1991.5" y="2746" width="301" height="73" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-25" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Get Cart items for user&lt;br&gt;&lt;span style=&quot;font-size: 12px; font-weight: normal;&quot;&gt;here,&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/h1&gt;&lt;table style=&quot;border-collapse:&amp;lt;br/&amp;gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; height=&quot;19&quot;&gt;/getCart/{restaurantId}/{userId} this api will be triggered to get all the added cart items (even if it is zero)&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2552" y="2715" width="316" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-27" target="pxZ1FeGk42S8Q_zd6QdM-29">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2418" y="2983" />
+              <mxPoint x="2418" y="3009" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-27" target="pxZ1FeGk42S8Q_zd6QdM-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pxZ1FeGk42S8Q_zd6QdM-27" target="pxZ1FeGk42S8Q_zd6QdM-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-27" value="Clicks to place 0rder button to place an order" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1992" y="2947" width="301" height="73" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-29" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Place order&lt;br&gt;&lt;span style=&quot;font-size: 12px; font-weight: normal;&quot;&gt;here, Multiple API&#39;s will get triggered.&amp;nbsp;&lt;br&gt;1. place order /placeOrder, it will also update the inventory.&lt;br&gt;2. trigger&#39;s the order status API. and status of order will be displayed to user.&lt;br&gt;3. generates bill, and show option to pay bill&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/span&gt;&lt;/h1&gt;&lt;br&gt;&lt;table style=&quot;border-collapse:&amp;lt;br/&amp;gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; height=&quot;19&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2548" y="2916" width="316" height="186" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-31" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Payment service&lt;br&gt;&lt;span style=&quot;font-size: 12px; font-weight: normal;&quot;&gt;here, payment will be proceed, before we can ask to add a tip. then redirects back to application after successful payment and ask for a review.&lt;br&gt;&lt;/span&gt;&lt;/span&gt;&lt;/h1&gt;&lt;br&gt;&lt;table style=&quot;border-collapse:&amp;lt;br/&amp;gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; height=&quot;19&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="2543" y="3119" width="316" height="133" as="geometry" />
+        </mxCell>
+        <mxCell id="pxZ1FeGk42S8Q_zd6QdM-34" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Cancel order&lt;br&gt;&lt;span style=&quot;font-size: 12px; font-weight: normal;&quot;&gt;here, reverts the changes made in place order API&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/span&gt;&lt;/h1&gt;&lt;br&gt;&lt;table style=&quot;border-collapse:&amp;lt;br/&amp;gt; collapse;width:164pt&quot; width=&quot;218&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr style=&quot;height:14.5pt&quot; height=&quot;19&quot;&gt;  &lt;td style=&quot;height:14.5pt;width:164pt&quot; width=&quot;218&quot; height=&quot;19&quot;&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1495" y="2910" width="316" height="186" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

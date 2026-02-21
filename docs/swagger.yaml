@@ -1,0 +1,2180 @@
+openapi: 3.0.0
+info:
+  title: Restaurant Management System API
+  description: Comprehensive API for restaurant management including orders, menu, cart, reviews, tables, kitchen, service, and billing
+  version: 1.0.0
+  contact:
+    name: Restaurant Management System
+    email: support@restaurant-system.com
+
+servers:
+  - url: https://api.restaurant-system.com/v1
+    description: Production server
+  - url: https://staging-api.restaurant-system.com/v1
+    description: Staging server
+
+
+
+components:
+  schemas:
+    # Standard Response Schema
+    StandardResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request was successful
+        message:
+          type: string
+          description: Human-readable message
+        data:
+          type: object
+          description: Response data (structure varies by endpoint)
+        error:
+          type: object
+          nullable: true
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+        timestamp:
+          type: string
+          format: date-time
+        requestId:
+          type: string
+          description: Unique identifier for the request
+      required:
+        - success
+        - message
+        - timestamp
+        - requestId
+
+    # Restaurant Schemas
+    Restaurant:
+      type: object
+      properties:
+        restaurant_id:
+          type: string
+          description: Unique ID of the restaurant
+        name:
+          type: string
+          maxLength: 100
+          description: Name of the restaurant
+        slogan:
+          type: string
+          maxLength: 150
+          nullable: true
+          description: Short catchy tagline
+        description:
+          type: string
+          nullable: true
+          description: Restaurant description
+        category:
+          type: string
+          maxLength: 50
+          enum: [Fine Dining, Café, Fast Food, Casual Dining, Bar, Bakery]
+          description: Restaurant category
+        address_line1:
+          type: string
+          maxLength: 150
+          description: Street address
+        address_line2:
+          type: string
+          maxLength: 150
+          nullable: true
+          description: Optional extra address
+        city:
+          type: string
+          maxLength: 100
+          description: City for location filtering
+        state:
+          type: string
+          maxLength: 100
+          description: State/province
+        zip_code:
+          type: string
+          maxLength: 15
+          nullable: true
+          description: Postal code
+        latitude:
+          type: number
+          format: double
+          nullable: true
+          description: GPS location latitude
+        longitude:
+          type: number
+          format: double
+          nullable: true
+          description: GPS location longitude
+        logo_url:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Logo image for branding
+        cover_image_url:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Background/banner image
+        opening_hours:
+          type: object
+          nullable: true
+          description: JSON object with opening hours
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - name
+        - address_line1
+        - city
+        - state
+
+    CreateRestaurantRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        slogan:
+          type: string
+          maxLength: 150
+        description:
+          type: string
+        category:
+          type: string
+          enum: [Fine Dining, Café, Fast Food, Casual Dining, Bar, Bakery]
+        address_line1:
+          type: string
+          maxLength: 150
+        address_line2:
+          type: string
+          maxLength: 150
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        zip_code:
+          type: string
+          maxLength: 15
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        logo_url:
+          type: string
+          maxLength: 255
+        cover_image_url:
+          type: string
+          maxLength: 255
+        opening_hours:
+          type: object
+      required:
+        - name
+        - address_line1
+        - city
+        - state
+
+    # Menu Card Schemas
+    MenuCard:
+      type: object
+      properties:
+        menu_card_id:
+          type: string
+          description: Unique ID for the menu card
+        restaurant_id:
+          type: string
+          description: Links this menu card to a specific restaurant
+        title:
+          type: string
+          maxLength: 100
+          nullable: true
+          description: Optional title shown above menu
+        subtitle:
+          type: string
+          maxLength: 150
+          nullable: true
+          description: Optional description below title
+        theme:
+          type: string
+          maxLength: 50
+          enum: [dark, light, vintage, modern, classic]
+          description: UI Theme for styling
+        cover_image_url:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: Banner or cover image for the menu
+        menu_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - restaurant_id
+
+    CreateMenuCardRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 100
+        subtitle:
+          type: string
+          maxLength: 150
+        theme:
+          type: string
+          enum: [dark, light, vintage, modern, classic]
+        cover_image_url:
+          type: string
+          maxLength: 255
+
+    # MenuItem Schemas
+    MenuItem:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: Unique identifier for the menu item
+        menu_card_id:
+          type: string
+          description: Relates item to menu card
+        category_id:
+          type: string
+          description: Lookup category
+        item_name:
+          type: string
+          maxLength: 100
+          description: Name of the dish
+        item_description:
+          type: string
+          nullable: true
+          description: Description of the dish
+        item_price:
+          type: number
+          format: decimal
+          description: Price in local currency
+        item_image_url:
+          type: string
+          maxLength: 255
+          nullable: true
+          description: URL of item image
+        available:
+          type: boolean
+          default: true
+          description: If the item is currently available
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - item_name
+        - item_price
+
+    CreateMenuItemRequest:
+      type: object
+      properties:
+        category_id:
+          type: string
+        item_name:
+          type: string
+          maxLength: 100
+        item_description:
+          type: string
+        item_price:
+          type: number
+          format: decimal
+        item_image_url:
+          type: string
+          maxLength: 255
+        available:
+          type: boolean
+          default: true
+      required:
+        - item_name
+        - item_price
+
+    # Cart Schemas
+    Cart:
+      type: object
+      properties:
+        cart_id:
+          type: integer
+          format: int64
+        user_id:
+          type: string
+          maxLength: 100
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        total_items:
+          type: integer
+        total_price:
+          type: number
+          format: decimal
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CartItem:
+      type: object
+      properties:
+        cart_item_id:
+          type: integer
+          format: int64
+        cart_id:
+          type: integer
+          format: int64
+        menu_item_id:
+          type: integer
+          format: int64
+        menu_item:
+          $ref: '#/components/schemas/MenuItem'
+        quantity:
+          type: integer
+          minimum: 1
+        session_id:
+          type: string
+          maxLength: 100
+        is_removed:
+          type: boolean
+          default: false
+        added_at:
+          type: string
+          format: date-time
+
+    AddItemToCartRequest:
+      type: object
+      properties:
+        menu_item_id:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          minimum: 1
+          default: 1
+        session_id:
+          type: string
+          maxLength: 100
+      required:
+        - menu_item_id
+
+    UpdateCartRequest:
+      type: object
+      properties:
+        cart_item_id:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          minimum: 1
+      required:
+        - cart_item_id
+        - quantity
+
+    # Order Schemas
+    Order:
+      type: object
+      properties:
+        order_id:
+          type: integer
+          format: int64
+        user_id:
+          type: string
+          maxLength: 100
+        session_id:
+          type: string
+          maxLength: 100
+        restaurant_id:
+          type: integer
+          format: int64
+        restaurant:
+          $ref: '#/components/schemas/Restaurant'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        is_paid:
+          type: boolean
+          default: false
+        total_price:
+          type: number
+          format: decimal
+        ordered_at:
+          type: string
+          format: date-time
+        is_cancelled:
+          type: boolean
+          default: false
+        current_status:
+          type: string
+          enum: [PLACED, CONFIRMED, PREPARING, READY, DELIVERED, CANCELLED]
+
+    OrderItem:
+      type: object
+      properties:
+        order_item_id:
+          type: integer
+          format: int64
+        order_id:
+          type: integer
+          format: int64
+        menu_item_id:
+          type: integer
+          format: int64
+        menu_item:
+          $ref: '#/components/schemas/MenuItem'
+        quantity:
+          type: integer
+          minimum: 1
+        customization_note:
+          type: string
+          nullable: true
+        suggested_improvements:
+          type: string
+          nullable: true
+
+    PlaceOrderRequest:
+      type: object
+      properties:
+        restaurant_id:
+          type: integer
+          format: int64
+        session_id:
+          type: string
+          maxLength: 100
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              menu_item_id:
+                type: integer
+                format: int64
+              quantity:
+                type: integer
+                minimum: 1
+              customization_note:
+                type: string
+            required:
+              - menu_item_id
+              - quantity
+        table_id:
+          type: integer
+          format: int64
+      required:
+        - restaurant_id
+        - items
+
+    # Review Schemas
+    Review:
+      type: object
+      properties:
+        review_id:
+          type: integer
+          format: int64
+        user_id:
+          type: string
+          maxLength: 100
+        restaurant_id:
+          type: integer
+          format: int64
+        menu_item_id:
+          type: integer
+          format: int64
+          nullable: true
+        rating:
+          type: number
+          format: decimal
+          minimum: 0.0
+          maximum: 5.0
+        title:
+          type: string
+          maxLength: 100
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        is_approved:
+          type: boolean
+          default: false
+
+    AddReviewRequest:
+      type: object
+      properties:
+        menu_item_id:
+          type: integer
+          format: int64
+        rating:
+          type: number
+          format: decimal
+          minimum: 0.0
+          maximum: 5.0
+        title:
+          type: string
+          maxLength: 100
+        comment:
+          type: string
+      required:
+        - rating
+
+    # Table Schemas
+    Table:
+      type: object
+      properties:
+        table_id:
+          type: integer
+          format: int64
+        restaurant_id:
+          type: integer
+          format: int64
+        table_number:
+          type: string
+          maxLength: 20
+        seating_capacity:
+          type: integer
+        status:
+          type: string
+          enum: [FREE, OCCUPIED, RESERVED]
+        assigned_to_user_id:
+          type: string
+          maxLength: 100
+          nullable: true
+        session_id:
+          type: string
+          maxLength: 100
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    AssignTableRequest:
+      type: object
+      properties:
+        table_id:
+          type: integer
+          format: int64
+        user_id:
+          type: string
+          maxLength: 100
+        session_id:
+          type: string
+          maxLength: 100
+        seating_capacity_needed:
+          type: integer
+      required:
+        - seating_capacity_needed
+
+    UpdateTableStatusRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [FREE, OCCUPIED, RESERVED]
+        assigned_to_user_id:
+          type: string
+          maxLength: 100
+        session_id:
+          type: string
+          maxLength: 100
+      required:
+        - status
+
+    # Service Request Schemas
+    ServiceRequest:
+      type: object
+      properties:
+        request_id:
+          type: integer
+          format: int64
+        table_id:
+          type: integer
+          format: int64
+        restaurant_id:
+          type: integer
+          format: int64
+        request_type:
+          type: string
+          enum: [WAITER, WATER, BILLING, CLEANING, OTHER]
+        message:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, IN_PROGRESS, RESOLVED]
+        created_at:
+          type: string
+          format: date-time
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    RequestWaiterRequest:
+      type: object
+      properties:
+        request_type:
+          type: string
+          enum: [WAITER, WATER, BILLING, CLEANING, OTHER]
+        message:
+          type: string
+      required:
+        - request_type
+
+    # Billing Schemas
+    Bill:
+      type: object
+      properties:
+        bill_id:
+          type: integer
+          format: int64
+        table_id:
+          type: integer
+          format: int64
+        restaurant_id:
+          type: integer
+          format: int64
+        order_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+        subtotal:
+          type: number
+          format: decimal
+        tax_amount:
+          type: number
+          format: decimal
+        service_charge:
+          type: number
+          format: decimal
+        total_amount:
+          type: number
+          format: decimal
+        payment_status:
+          type: string
+          enum: [PENDING, PAID, PARTIALLY_PAID, FAILED]
+        created_at:
+          type: string
+          format: date-time
+
+    PaymentRequest:
+      type: object
+      properties:
+        bill_id:
+          type: integer
+          format: int64
+        payment_method:
+          type: string
+          enum: [UPI, CARD, CASH, WALLET]
+        amount:
+          type: number
+          format: decimal
+        payment_details:
+          type: object
+          properties:
+            upi_id:
+              type: string
+            card_number:
+              type: string
+            transaction_id:
+              type: string
+      required:
+        - bill_id
+        - payment_method
+        - amount
+
+    SplitBillRequest:
+      type: object
+      properties:
+        splits:
+          type: array
+          items:
+            type: object
+            properties:
+              user_id:
+                type: string
+              amount:
+                type: number
+                format: decimal
+              payment_method:
+                type: string
+                enum: [UPI, CARD, CASH, WALLET]
+            required:
+              - user_id
+              - amount
+              - payment_method
+      required:
+        - splits
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
+
+paths:
+  # Restaurant APIs
+  /CreateRestaurant:
+    post:
+      tags:
+        - Restaurant
+      summary: Create/Register restaurant to system
+      description: Used by Owner to create a new restaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRestaurantRequest'
+      responses:
+        '201':
+          description: Restaurant created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Order'
+
+  /orderStatus/{orderId}:
+    get:
+      tags:
+        - Order
+      summary: Get order status
+      description: Used by Customer to get status of an order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Order status retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          order_id:
+                            type: integer
+                            format: int64
+                          current_status:
+                            type: string
+                            enum: [PLACED, CONFIRMED, PREPARING, READY, DELIVERED, CANCELLED]
+                          estimated_time:
+                            type: integer
+                            description: Estimated time in minutes
+                          status_history:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                status:
+                                  type: string
+                                timestamp:
+                                  type: string
+                                  format: date-time
+                                created_by:
+                                  type: string
+
+  /orderHistory/{userId}:
+    get:
+      tags:
+        - Order
+      summary: Get order history
+      description: Used by Customer to get history of orders
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Order history retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          orders:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Order'
+                          total:
+                            type: integer
+                          page:
+                            type: integer
+                          limit:
+                            type: integer
+
+  # Review APIs
+  /addReview/{restaurantId}/{userId}:
+    post:
+      tags:
+        - Review
+      summary: Add review and rating
+      description: Used by Customer to add review and rating
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddReviewRequest'
+      responses:
+        '201':
+          description: Review added successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Review'
+
+  /updateReview/{reviewId}:
+    put:
+      tags:
+        - Review
+      summary: Update review and rating
+      description: Used by Customer to update review and rating
+      parameters:
+        - name: reviewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddReviewRequest'
+      responses:
+        '200':
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Review'
+
+  /getAllReviews/{restaurantId}:
+    get:
+      tags:
+        - Review
+      summary: Get all reviews of restaurant
+      description: Used by Customer/Owner to get all reviews of restaurant
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: rating_filter
+          in: query
+          schema:
+            type: number
+            format: decimal
+            minimum: 0.0
+            maximum: 5.0
+      responses:
+        '200':
+          description: Reviews retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          reviews:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Review'
+                          total:
+                            type: integer
+                          page:
+                            type: integer
+                          limit:
+                            type: integer
+                          average_rating:
+                            type: number
+                            format: decimal
+                          rating_distribution:
+                            type: object
+                            properties:
+                              "5":
+                                type: integer
+                              "4":
+                                type: integer
+                              "3":
+                                type: integer
+                              "2":
+                                type: integer
+                              "1":
+                                type: integer
+
+  # Table APIs
+  /assignTable/{restaurantId}:
+    post:
+      tags:
+        - Table
+      summary: Assign table to customer
+      description: Used by Staff/Owner to assign a table to a customer
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignTableRequest'
+      responses:
+        '200':
+          description: Table assigned successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Table'
+
+  /getAllTables/{restaurantId}:
+    get:
+      tags:
+        - Table
+      summary: Get all tables with status
+      description: Used by Staff/Owner to get all tables with status (free/occupied)
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [FREE, OCCUPIED, RESERVED]
+      responses:
+        '200':
+          description: Tables retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          tables:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Table'
+                          summary:
+                            type: object
+                            properties:
+                              total_tables:
+                                type: integer
+                              free_tables:
+                                type: integer
+                              occupied_tables:
+                                type: integer
+                              reserved_tables:
+                                type: integer
+
+  /updateTableStatus/{tableId}:
+    put:
+      tags:
+        - Table
+      summary: Update table status
+      description: Used by Staff/Owner to mark table as occupied, reserved, or free
+      parameters:
+        - name: tableId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTableStatusRequest'
+      responses:
+        '200':
+          description: Table status updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Table'
+
+  /getTableStatus/{tableId}:
+    get:
+      tags:
+        - Table
+      summary: Get table status
+      description: Used by Staff to check real-time status of a table
+      parameters:
+        - name: tableId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Table status retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Table'
+
+  /releaseTable/{tableId}:
+    post:
+      tags:
+        - Table
+      summary: Release table
+      description: Used by Staff to mark table as available after payment
+      parameters:
+        - name: tableId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Table released successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Table'
+
+  # Kitchen APIs
+  /getNewOrders/{restaurantId}:
+    get:
+      tags:
+        - Kitchen
+      summary: Get new orders
+      description: Used by Kitchen to fetch new orders placed by diners
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [PLACED, CONFIRMED]
+            default: PLACED
+      responses:
+        '200':
+          description: New orders retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          orders:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Order'
+                          total:
+                            type: integer
+
+  /updateOrderStatus/{orderId}:
+    put:
+      tags:
+        - Kitchen
+      summary: Update order status
+      description: Used by Kitchen to mark order as "Preparing", "Ready", etc.
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [CONFIRMED, PREPARING, READY, DELIVERED]
+                estimated_time:
+                  type: integer
+                  description: Estimated time in minutes
+                notes:
+                  type: string
+              required:
+                - status
+      responses:
+        '200':
+          description: Order status updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          order_id:
+                            type: integer
+                            format: int64
+                          status:
+                            type: string
+                          updated_at:
+                            type: string
+                            format: date-time
+
+  /getOrderItems/{orderId}:
+    get:
+      tags:
+        - Kitchen
+      summary: Get order items
+      description: Used by Kitchen to view individual items in the order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Order items retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          order_id:
+                            type: integer
+                            format: int64
+                          table_number:
+                            type: string
+                          items:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/OrderItem'
+                          total_items:
+                            type: integer
+
+  # Service APIs
+  /requestWaiter/{tableId}:
+    post:
+      tags:
+        - Service
+      summary: Request waiter assistance
+      description: Used by Customer to request waiter assistance (e.g. water, billing)
+      parameters:
+        - name: tableId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestWaiterRequest'
+      responses:
+        '201':
+          description: Service request created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ServiceRequest'
+
+  /getServiceRequests/{restaurantId}:
+    get:
+      tags:
+        - Service
+      summary: Get service requests
+      description: Used by Staff to get list of active service calls from tables
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [PENDING, IN_PROGRESS, RESOLVED]
+            default: PENDING
+      responses:
+        '200':
+          description: Service requests retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          requests:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/ServiceRequest'
+                          total:
+                            type: integer
+
+  /resolveServiceRequest/{requestId}:
+    post:
+      tags:
+        - Service
+      summary: Resolve service request
+      description: Used by Staff to resolve service request (mark as done)
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resolution_notes:
+                  type: string
+      responses:
+        '200':
+          description: Service request resolved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ServiceRequest'
+
+  # Billing APIs
+  /generateBill/{tableId}:
+    get:
+      tags:
+        - Billing
+      summary: Generate bill for table
+      description: Used by Customer/Staff to generate final bill for the table
+      parameters:
+        - name: tableId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Bill generated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Bill'
+
+  /makePayment:
+    post:
+      tags:
+        - Billing
+      summary: Make payment
+      description: Used by Customer to pay via UPI/card at table
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: Payment processed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          payment_id:
+                            type: string
+                          transaction_id:
+                            type: string
+                          status:
+                            type: string
+                            enum: [SUCCESS, FAILED, PENDING]
+                          amount:
+                            type: number
+                            format: decimal
+                          payment_method:
+                            type: string
+                          processed_at:
+                            type: string
+                            format: date-time
+
+  /getPaymentStatus/{billId}:
+    get:
+      tags:
+        - Billing
+      summary: Get payment status
+      description: Used by Staff to check if customer has paid
+      parameters:
+        - name: billId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Payment status retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          bill_id:
+                            type: integer
+                            format: int64
+                          payment_status:
+                            type: string
+                            enum: [PENDING, PAID, PARTIALLY_PAID, FAILED]
+                          total_amount:
+                            type: number
+                            format: decimal
+                          paid_amount:
+                            type: number
+                            format: decimal
+                          pending_amount:
+                            type: number
+                            format: decimal
+                          payments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                payment_id:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: decimal
+                                payment_method:
+                                  type: string
+                                status:
+                                  type: string
+                                processed_at:
+                                  type: string
+                                  format: date-time
+
+  /splitBill/{tableId}:
+    post:
+      tags:
+        - Billing
+      summary: Split bill payment
+      description: Used by Customer to allow split bill payments among guests
+      parameters:
+        - name: tableId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SplitBillRequest'
+      responses:
+        '200':
+          description: Split bill processed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          bill_id:
+                            type: integer
+                            format: int64
+                          split_payments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                user_id:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: decimal
+                                payment_method:
+                                  type: string
+                                status:
+                                  type: string
+                                  enum: [SUCCESS, FAILED, PENDING]
+                                transaction_id:
+                                  type: string
+                          total_amount:
+                            type: number
+                            format: decimal
+                          total_paid:
+                            type: number
+                            format: decimal
+                          remaining_amount:
+                            type: number
+                            format: decimalcomponents/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Restaurant'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  /GetRestaurant/{restaurantId}:
+    get:
+      tags:
+        - Restaurant
+      summary: Get restaurant details
+      description: Used by Owner to get restaurant along with special offers
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Restaurant details retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Restaurant'
+        '404':
+          description: Restaurant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  /UpdateRestaurant/{restaurantId}:
+    put:
+      tags:
+        - Restaurant
+      summary: Update restaurant
+      description: Used by Owner to update restaurant details
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRestaurantRequest'
+      responses:
+        '200':
+          description: Restaurant updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Restaurant'
+
+  /DeleteRestaurant/{restaurantId}:
+    delete:
+      tags:
+        - Restaurant
+      summary: Delete restaurant
+      description: Used by Owner to delete restaurant
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Restaurant deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  /GetAllRestaurants:
+    get:
+      tags:
+        - Restaurant
+      summary: Get all restaurants
+      description: Used by ADMIN to get all restaurants
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Restaurants retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          restaurants:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Restaurant'
+                          total:
+                            type: integer
+                          page:
+                            type: integer
+                          limit:
+                            type: integer
+
+  /CreateOrUpdateSpecialOffers:
+    post:
+      tags:
+        - Restaurant
+      summary: Create or update special offers
+      description: Used by Owner to update special offers for a day
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_id:
+                  type: string
+                offers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      discount_percentage:
+                        type: number
+                      valid_from:
+                        type: string
+                        format: date-time
+                      valid_until:
+                        type: string
+                        format: date-time
+              required:
+                - restaurant_id
+                - offers
+      responses:
+        '200':
+          description: Special offers updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  # Menu Card APIs
+  /CreateMenuCard:
+    post:
+      tags:
+        - Menu Card
+      summary: Create menu card
+      description: Used by Owner to create menu card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/CreateMenuCardRequest'
+                - type: object
+                  properties:
+                    restaurant_id:
+                      type: string
+                  required:
+                    - restaurant_id
+      responses:
+        '201':
+          description: Menu card created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/MenuCard'
+
+  /DeleteMenuCard/{menuCardId}:
+    delete:
+      tags:
+        - Menu Card
+      summary: Delete menu card
+      description: Used by Owner to delete menu card
+      parameters:
+        - name: menuCardId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Menu card deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  /UpdateMenuCard/{menuCardId}:
+    put:
+      tags:
+        - Menu Card
+      summary: Update menu card
+      description: Used by Owner to update menu card
+      parameters:
+        - name: menuCardId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMenuCardRequest'
+      responses:
+        '200':
+          description: Menu card updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/MenuCard'
+
+  /GetMenuCard/{menuCardId}:
+    get:
+      tags:
+        - Menu Card
+      summary: Get menu card with menu items
+      description: Used by Customer/Owner to get menu card with menu items details
+      parameters:
+        - name: menuCardId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Menu card retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/MenuCard'
+
+  /GetMenuCard/restaurant/{restaurantId}:
+    get:
+      tags:
+        - Menu Card
+      summary: Get menu card by restaurant ID
+      description: Used by Customer to get menu card with menu items details by restaurant ID
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Menu card retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/MenuCard'
+
+  /CreateMenuItem/{menuCardId}:
+    post:
+      tags:
+        - Menu Card
+      summary: Create menu item
+      description: Used by Owner to create menu item for menu card
+      parameters:
+        - name: menuCardId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMenuItemRequest'
+      responses:
+        '201':
+          description: Menu item created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/MenuItem'
+
+  /UpdateMenuItem/{itemId}:
+    put:
+      tags:
+        - Menu Card
+      summary: Update menu item
+      description: Used by Owner to update menu item
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMenuItemRequest'
+      responses:
+        '200':
+          description: Menu item updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/MenuItem'
+
+  /GetMenuItem/{itemId}:
+    get:
+      tags:
+        - Menu Card
+      summary: Get menu item
+      description: Used by Customer/Owner to get menu item details
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Menu item retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/MenuItem'
+
+  /DeleteMenuItem/{itemId}:
+    delete:
+      tags:
+        - Menu Card
+      summary: Delete menu item
+      description: Used by Owner to delete menu item
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Menu item deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  # Cart APIs
+  /AddItem:
+    post:
+      tags:
+        - Cart
+      summary: Add item to cart
+      description: Used by Customer to add item to cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddItemToCartRequest'
+      responses:
+        '201':
+          description: Item added to cart successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CartItem'
+
+  /removeItems/{itemId}:
+    delete:
+      tags:
+        - Cart
+      summary: Remove item from cart
+      description: Used by Customer to remove item from cart
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Item removed from cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+
+  /UpdateCart:
+    put:
+      tags:
+        - Cart
+      summary: Update cart item quantity
+      description: Used by Customer to update item quantity in cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCartRequest'
+      responses:
+        '200':
+          description: Cart updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CartItem'
+
+  /getCart/{restaurantId}/{userId}:
+    get:
+      tags:
+        - Cart
+      summary: Get user's cart
+      description: Used by Customer to get cart for a specific restaurant
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Cart'
+                        
+# Order APIs
+  /placeOrder:
+    post:
+      tags:
+        - Order
+      summary: Place an order
+      description: Used by Customer to place an order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceOrderRequest'
+      responses:
+        '201':
+          description: Order placed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/StandardResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Order'
+
+  /cancelOrder/{orderId}:
+  post:
+    tags:
+      - Order
+    summary: Cancel order
+    description: Used by Customer to cancel order
+    parameters:
+      - name: orderId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: Order cancelled successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StandardResponse'
+'#/
+
+
+   $ref: '#/components/schemas/Order'

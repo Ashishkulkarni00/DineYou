@@ -1,0 +1,101 @@
+Perfect — we can frame this as a complete **“challenge + troubleshooting + solution” story** for interviews, and explain the reasoning in detail. Here’s how I’d present it:
+
+---
+
+## Challenge Story: Containerized Frontend Networking Issue
+
+**Scenario:**
+
+During the development of our in-dining digital menu card system, we faced a peculiar issue when containerizing the React frontend:
+
+1. All backend services (restaurant, menucard, cart, order, payment) were running inside Docker containers.
+2. The frontend UI worked perfectly when running locally on the host machine (`localhost:5173`) — all API calls succeeded, logs showed no errors, and postman verified all APIs returned success responses.
+3. However, when we containerized the frontend and ran it inside Docker alongside other services, the same API calls appeared successful (HTTP 200 returned), but the React app **stopped processing further**, no data was rendered, and state updates didn’t happen.
+
+---
+
+### Things Tried
+
+* **CORS and Preflight Fixes:**
+  Configured `CorsConfigurationSource` and added headers like `Access-Control-Allow-Origin`, `Access-Control-Allow-Credentials`, etc. Everything seemed fine — API requests reached the backend, CORS was not the blocker.
+
+* **Debugging API Responses:**
+  Logs confirmed the responses from backend services were valid JSON, with the correct shape and no runtime errors in Redux dispatching.
+
+* **Changing API hostnames:**
+  Tried using:
+
+  * `localhost` → didn’t work, because inside the UI container, `localhost` points to the **UI container itself**, not the backend containers.
+  * Docker service names (`restaurant_service`, `menucard_service`) → didn’t work, because the **browser executes the JS bundle**, and the browser cannot resolve Docker internal hostnames.
+  * `host.docker.internal` → didn’t work reliably for all cases, because the browser still runs on host context and it sometimes cannot map consistently, especially in production or CI/CD environments.
+
+At this point, it became clear: the issue was **networking between the browser, UI container, and backend containers**. The code runs in the browser, not inside the container — so references like `localhost` or container names are meaningless from the browser's perspective.
+
+---
+
+### Root Cause
+
+1. **Localhost confusion:**
+   Inside the UI container, `localhost` refers to **the UI container itself**, not backend services.
+
+2. **Container names cannot be resolved from the browser:**
+   Even though backend containers are named `restaurant_service` etc., the **JS code executes in the client’s browser**, which knows nothing about Docker DNS.
+
+3. **Browser runs outside Docker:**
+   All API calls are initiated from the browser. Therefore, the browser must see **host machine’s network**, not Docker internal network.
+
+---
+
+### Solution: Nginx Reverse Proxy
+
+To solve this, we implemented a **reverse proxy using Nginx**, and adjusted the Docker network topology as follows:
+
+1. **Nginx container:**
+
+   * Exposes `80` and `443` ports on the host machine.
+   * Serves the React UI build (`dist`) and also forwards API requests to backend containers using **container names** (`restaurant_service:8080`, `menucard_service:8081`, etc.) inside Docker network.
+
+2. **Frontend container:**
+
+   * Calls APIs using relative paths (e.g., `/api/v1/restaurant/1`) or via Nginx hostname (`localhost` in browser).
+   * Because Nginx resolves requests to container names inside Docker, API calls succeed from containerized UI.
+
+3. **Request flow:**
+
+```
+[Browser] -> http://localhost:80 (host machine)
+       | (HTTP request)
+       v
+[Nginx container] -> /api/v1/restaurant/... (reverse proxy)
+       | (Docker network)
+       v
+[Restaurant Service container] -> Returns JSON
+       ^
+       | (response)
+       |
+[Nginx container] -> forwards response
+       |
+       v
+[Browser] -> React app processes data
+```
+
+4. **Benefits of this setup:**
+
+   * **No direct container hostname exposure to browser** — browser always talks to host (`localhost:80/443`).
+   * UI container and backend containers communicate using Docker DNS internally.
+   * Works in **development, Dockerized environments, and production** without changing API URLs in the frontend.
+   * Handles both static asset serving (UI build) and API reverse proxy in a single container.
+
+---
+
+### Key Learnings
+
+* **Browser context ≠ Container context:** Never assume container hostnames will work in client-side code.
+* **Use a reverse proxy:** It decouples browser API requests from internal container networking.
+* **Relative API paths + Nginx proxy:** Simplifies frontend configuration and avoids `localhost` / `host.docker.internal` confusion.
+
+---
+
+If you want, I can also **draw a simple diagram with arrows showing the flow** from browser → Nginx → containers → browser, which looks very impressive in interviews.
+
+Do you want me to do that?

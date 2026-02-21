@@ -1,0 +1,235 @@
+version: "3.9"
+
+services:
+  # ===========================
+  # MYSQL DATABASE (prebuilt image is fine)
+  # ===========================
+  database:
+    image: mysql:8.0
+    container_name: dineyou-database
+    restart: unless-stopped
+    env_file:
+      - ./env/mysql/.env
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - dineyou-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+
+  # ===========================
+  # KEYCLOAK (prebuilt image)
+  # ===========================
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.0
+    container_name: keycloak
+    restart: unless-stopped
+    env_file:
+      - ./env/global.env
+      - ./env/keycloak_service/.env
+    ports:
+      - "8585:8080"
+    command:
+      - start-dev
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - dineyou-network
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+      - ../keycloak-custom-theme/custom-theme:/opt/keycloak/themes/custom-theme:ro
+
+  # ===========================
+  # UI SERVICE
+  # ===========================
+  # ui_service:
+  #   build:
+  #     context: ../UI/dineyou-ui           
+  #     dockerfile: Dockerfile          
+  #   image: dineyou-ui-service:${IMAGE_TAG}
+  #   container_name: ui-service
+  #   restart: unless-stopped
+  #   env_file:
+  #     - ./env/global.env
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     restaurant_service:
+  #       condition: service_started
+  #     keycloak:
+  #       condition: service_started
+  #   networks:
+  #     - dineyou-network
+  #   volumes:
+  #     - ui-service-logs:/app/logs
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+
+  # ===========================
+  # RESTAURANT SERVICE
+  # ===========================
+  restaurant_service:
+    build:
+      context: ../restaurant_service   
+      dockerfile: Dockerfile
+    image: dineyou-restaurant-service:${IMAGE_TAG}
+    container_name: restaurant-service
+    restart: unless-stopped
+    env_file:
+      - ./env/global.env
+      - ./env/restaurant_service/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    networks:
+      - dineyou-network
+    volumes:
+      - restaurant-service-logs:/app/logs
+
+  # ===========================
+  # MENUCARD SERVICE
+  # ===========================
+  menucard_service:
+    build:
+      context: ../menucard_service     
+      dockerfile: Dockerfile
+    image: dineyou-menucard-service:${IMAGE_TAG}
+    container_name: menucard-service
+    restart: unless-stopped
+    env_file:
+      - ./env/global.env
+      - ./env/menucard_service/.env
+    ports:
+      - "8081:8081"
+    depends_on:
+      restaurant_service:
+        condition: service_started
+    networks:
+      - dineyou-network
+    volumes:
+      - menucard-service-logs:/app/logs
+
+  # # ===========================
+  # # CART SERVICE
+  # # ===========================
+  cart_service:
+    build:
+      context: ../cart_service         
+      dockerfile: Dockerfile
+    image: dineyou-cart-service:${IMAGE_TAG}
+    container_name: cart-service
+    restart: unless-stopped
+    env_file:
+      - ./env/global.env
+      - ./env/cart_service/.env
+    ports:
+      - "8082:8082"
+    depends_on:
+      menucard_service:
+        condition: service_started
+    networks:
+      - dineyou-network
+    volumes:
+      - cart-service-logs:/app/logs
+
+  # # ===========================
+  # # ORDER SERVICE
+  # # ===========================
+  order_service:
+    build:
+      context: ../order_service        
+      dockerfile: Dockerfile
+    image: dineyou-order-service:${IMAGE_TAG}
+    container_name: order-service
+    restart: unless-stopped
+    env_file:
+      - ./env/global.env
+      - ./env/order_service/.env
+    ports:
+      - "8083:8083"
+    depends_on:
+      cart_service:
+        condition: service_started
+    networks:
+      - dineyou-network
+    volumes:
+      - order-service-logs:/app/logs
+
+  # # ===========================
+  # # PAYMENT SERVICE
+  # # ===========================
+  payment_service:
+    build:
+      context: ../payment_service      
+      dockerfile: Dockerfile
+    image: dineyou-payment-service:${IMAGE_TAG}
+    container_name: payment-service
+    restart: unless-stopped
+    env_file:
+      - ./env/global.env
+      - ./env/payment_service/.env
+    ports:
+      - "8084:8084"
+    depends_on:
+      order_service:
+        condition: service_started
+    networks:
+      - dineyou-network
+    volumes:
+      - payment-service-logs:/app/logs
+
+  # ===========================
+  # NGINX (optional: build custom image)
+  # ===========================
+  # nginx:
+  #   image: nginx:alpine
+  #   # or:
+  #   # build:
+  #   #   context: ./nginx
+  #   #   dockerfile: Dockerfile
+  #   container_name: nginx_proxy
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - ui_service
+  #     - keycloak
+  #     - restaurant_service
+  #     - menucard_service
+  #     - cart_service
+  #     - order_service
+  #     - payment_service
+  #   networks:
+  #     - dineyou-network
+
+volumes:
+  db-data:
+  keycloak-data:
+  ui-service-logs:
+  restaurant-service-logs:
+  menucard-service-logs:
+  cart-service-logs:
+  order-service-logs:
+  payment-service-logs:
+
+networks:
+  dineyou-network:
+    driver: bridge
+
+

@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow-y: auto;  
+  
+}
+
+.category-heading {
+  scroll-margin-top: 4rem; 
+}
+
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-10%);
+  }
+  80% {
+    transform: translateX(450%); /* finish moving earlier */
+  }
+  100% {
+    transform: translateX(450%); /* stay still until the end */
+  }
+}
+.animate-shimmer {
+  animation: shimmer 5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s infinite;
+  width: 100%;
+  height: 100%;
+}
+
+/* Move carousel dots down from top */
+.ant-carousel .slick-dots-top {
+  top: 24px; /* Adjust this value - increase to move further down */
+  bottom: auto;
+}
+
+.ant-carousel .slick-dots {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-carousel .slick-dots li {
+  margin: 0 3px;
+}
+
+.ant-carousel .slick-dots li button {
+  background: rgba(255, 255, 255, 0.6);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  background: #ffffff;
+  width: 20px;
+  border-radius: 3px;
+}
+
+
+/* LOGIN PROMPT CSS */
+
+@keyframes slideUp {
+  from {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.25s ease-out;
+}
+
+.hero-carousel-top-dots-position{
+  margin-top: 8px;
+}
+
+
+

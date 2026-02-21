@@ -1,0 +1,31 @@
+1. 
+
+In Menucard.jsx, when a new user adds an item to the cart for the first time, the original action dispatched is addToCart.
+Since the user doesn’t have a cart yet, the middleware first creates a new cart on the backend. After that, it attempts to add the item to the cart and update its cartItemId in the Redux store.
+The problem is that at this point, the item has not yet been added to the Redux store, so the middleware cannot find the item by menuItemId to update its cartItemId. The addToCart reducer only runs after the middleware returns next(action), which means the item only appears in the store after the middleware finishes.
+As a result, the middleware tries to update the cartItemId before the item exists in the Redux state, causing a mismatch.
+
+
+2. 
+why do user needs multiple carts - > 
+say user ordered some items from the cart now cart's status is updated to ordered 
+now what if he wants to order some more items 
+
+3. 
+Current issue is, if order is already placed and user places one more order there is some issue in OrderDetailsAndPayment.jsx
+component, needs debugging, the change made is now new cart is created when it is not active, ealier 
+we used to return the same cart if it existed, but now checked the status of activeness,.
+
+----------------------------------------------------------------------------------------------------------
+
+
+PROGRESS
+
+
+Check order footer componet, it should disappear when the payment is made, but it's not disappearing.
+and resulting in multiple payments for the same order.
+
+1. Also, point to remeber we need to show use when the item was added in a cart, so that surprises can be avoided.
+2. show te timings in orders section as well when was the order placed.
+
+
